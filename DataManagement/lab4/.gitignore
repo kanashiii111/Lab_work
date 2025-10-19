@@ -1,0 +1,18 @@
+# В папке DataManagement/ создайте файл .gitignore с содержимым:
+## Ignore Visual Studio temporary files
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+*.cache
+*.docstates
+_ReSharper*/
+*.nupkg
+*.pdb
+*.dll
+*.vsidx
+*.v2
+*.json
+*.bin
+*.db
+*.txt

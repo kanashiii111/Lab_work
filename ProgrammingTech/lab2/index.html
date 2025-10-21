@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA Tickets - Купить билеты на матч НБА</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+                <img src="https://cdn.nba.com/logos/leagues/logo-nba.svg" alt="NBA Logo">
+                <span>NBA TICKETS</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#matches">Матчи</a></li>
+                <li><a href="#teams">Команды</a></li>
+                <li><a href="#arenas">Арены</a></li>
+                <li><a href="#contact">Контакты</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>ПОКУПАЙТЕ БИЛЕТЫ НА МАТЧИ НБА</h1>
+            <p>Ощутите неповторимую атмосферу баскетбола НБА на лучших аренах мира</p>
+            <button class="cta-button" onclick="scrollToMatches()">Смотреть матчи</button>
+        </div>
+    </section>
+
+    <!-- Booking Form -->
+    <section class="booking-section">
+        <div class="container">
+            <h2>Забронируйте билеты</h2>
+            <form class="booking-form" id="bookingForm", method="post">
+                <div class="form-group">
+                    <label for="match">Выберите матч:</label>
+                    <select id="match" name="match" required>
+                        <option value="">-- Выберите матч --</option>
+                        <option value="match1">OKC Thunder vs Minnesota Timberwolves</option>
+                        <option value="match2">Miami Heat vs LA Lakers</option>
+                        <option value="match3">Sacramento Kings vs Washington Wizards</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="ticketType">Тип билета:</label>
+                    <select id="ticketType" name="ticketType" required>
+                        <option value="">-- Выберите тип --</option>
+                        <option value="standard">Стандарт - $150</option>
+                        <option value="premium">Премиум - $250</option>
+                        <option value="vip">VIP - $500</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Количество билетов:</label>
+                    <input type="number" id="quantity" name="quantity" min="1" max="10" value="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <button type="submit" class="submit-btn">Забронировать</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>NBA Tickets</h3>
+                    <p>Официальный партнер по продаже билетов на матчи НБА</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Контакты</h4>
+                    <p>Email: info@nbatickets.com</p>
+                    <p>Телефон: +1 (555) 123-4567</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Социальные сети</h4>
+                    <div class="social-links">
+                        <a href="#">Twitter</a>
+                        <a href="#">Facebook</a>
+                        <a href="#">Instagram</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+# Игнорировать файлы сборки и исполняемые файлы
+*.exe
+*.dll
+*.lib
+*.a
+*.so
+*.dylib
+
+# Файлы объектного кода
+*.obj
+*.o
+*.pch
+*.idb
+*.pdb
+*.ipdb
+*.iobj
+*.res
+*.ilk
+
+# Файлы Visual Studio
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.sln
+*.suo
+*.sdf
+*.opensdf
+*.db
+*.tlog
+*.log
+*.idb
+*.ipch
+*.aps
+*.ncb
+*.opt
+*.plg
+
+# Каталоги сборки
+[Bb]uild/
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Dd]ebugPublic/
+[Rr]eleases/
+[Bb]uildLog/
+
+# Файлы отладки
+*.pdb
+*.dbg
+*.sym
+
+# Файлы кэша
+.vs/
+.vscode/
+.idea/
+
+# Файлы резервных копий
+*~
+*.bak
+*.tmp
+*.temp
+
+# Системные файлы
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Пользовательские файлы
+*.user
+*.userosscache
+*.sln.docstates
+
+# Файлы инсталляции
+[Dd]ownloads/
+[Pp]ackages/
+*.msi
+*.msm
+*.msp
+
+# Файлы документации
+*.doc
+*.docx
+*.pdf
+*.chm
+
+# Логи
+*.log
+*.tlog
+*.log1
+*.log2
+
+# Прекомпилированные заголовки
+*.pch
+
+# Файлы ресурсов (если они генерируются)
+*.rc
+*.res
+
+# Автогенерируемые файлы
+GeneratedFiles/
+
+# Файлы пакетов NuGet
+packages/
+*.nupkg
+*.nuspec
+
+# Файлы CMake (если используется)
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Файлы покрытия кода
+*.gcda
+*.gcno
+*.gcov
+
+# Файлы статического анализа
+*.analyzer

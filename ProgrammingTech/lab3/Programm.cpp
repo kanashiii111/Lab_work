@@ -29,7 +29,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
     // Child Window init
 
-	ChildWindow* pChildWindow = new ChildWindow(pMainWindow->GetHwnd());
+	ChildWindow *pChildWindow = new ChildWindow(pMainWindow->GetHwnd());
 
 	// Main loop
 
@@ -38,7 +38,9 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
         running = pMainWindow->ProcessMessages();
         Sleep(10);
     }
+
     delete pMainWindow;
+	delete pChildWindow;
 
     // DEBUG
 

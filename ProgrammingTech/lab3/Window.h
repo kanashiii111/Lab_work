@@ -46,9 +46,12 @@ class ChildWindow{
 	private:
 		HINSTANCE hInstance;
 		HWND hwnd;
+		HWND passEditHwnd;
+		HWND testHwnd;
 	public:
 		ChildWindow(HWND parentHwnd);
 		~ChildWindow();
+		bool ProcessMessages();
 		HWND GetHwnd() const { return hwnd; }
 };
 

@@ -1,11 +1,24 @@
 ﻿#include "Window.h"
+#include "WinUser.h"
 #include <commctrl.h>
 #pragma comment(lib, "comctl32.lib")
 #include <iostream>
 #include "Element.h"
+#include "Windowsx.h"
 
-const int ADD_BTN_ID = 1;
-const int EDIT_BTN_ID = 2;
+const long long MAIN_ADD_BTN_ID = 1;
+const long long MAIN_EDIT_BTN_ID = 2;
+
+const long long CHILD_EDIT_ID = 3;
+const long long CHILD_TEST_BTN_ID = 4;
+
+const int buttonPadding = 20;
+const int buttonWidth = 100;
+const int buttonHeight = 30;
+
+HWND childHwnd;
+HWND mainHwnd;
+HWND test;
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     switch (uMsg) {
@@ -18,12 +31,12 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
             {
                 switch (LOWORD(wParam))
                 {
-                case ADD_BTN_ID:
-					std::cout << "Add button clicked" << std::endl;
+                case MAIN_ADD_BTN_ID:
+                    ShowWindow(childHwnd, SW_SHOW);
+                    //UpdateWindow(childHwnd);
                     break;
 
-                case EDIT_BTN_ID:
-					std::cout << "Edit button clicked" << std::endl;
+                case MAIN_EDIT_BTN_ID:
                     break;
                 }
             }
@@ -36,7 +49,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 Window::Window(int WIDTH, int HEIGHT)
     : hInstance(GetModuleHandle(nullptr))
 {
-    const wchar_t CLASS_NAME[] = L"Sample Window Class";
+    const wchar_t CLASS_NAME[] = L"Main Window";
 
 	listViewHwnd = NULL;
 	addButtonHwnd = NULL;
@@ -82,11 +95,9 @@ Window::Window(int WIDTH, int HEIGHT)
         NULL
     );
 
-    // add button
+	mainHwnd = hwnd;
 
-	int buttonPadding = 20;
-    int buttonWidth = 100;
-    int buttonHeight = 30;
+    // add button
 
     addButtonHwnd = CreateWindow(
         L"BUTTON",
@@ -97,7 +108,7 @@ Window::Window(int WIDTH, int HEIGHT)
         buttonWidth,
         buttonHeight,
         hwnd,
-		(HMENU)ADD_BTN_ID,
+		(HMENU)MAIN_ADD_BTN_ID,
         hInstance,
 		NULL
     );
@@ -113,26 +124,43 @@ Window::Window(int WIDTH, int HEIGHT)
         buttonWidth,
         buttonHeight,
         hwnd,
-        (HMENU)EDIT_BTN_ID,
+        (HMENU)MAIN_EDIT_BTN_ID,
         hInstance,
         NULL
     );
 
-    if (hwnd && addButtonHwnd && editButtonHwnd) {
-        ShowWindow(hwnd, SW_SHOW);
-		UpdateWindow(hwnd);
+
+    if (!hwnd) {
+        std::cout << "Window creation : Failure" << std::endl;
+        return;
     }
+    std::cout << "Window creation : Success" << std::endl;
+
+    if (!addButtonHwnd) {
+        std::cout << "addButton creation : Failure" << std::endl;
+        return;
+    }
+    std::cout << "addButton creation : Success" << std::endl;
+
+    if (!editButtonHwnd) {
+        std::cout << "editButton creation : Failure" << std::endl;
+        return;
+    }
+    std::cout << "editButton creation : Success" << std::endl;
+
+    ShowWindow(hwnd, SW_SHOW);
+    UpdateWindow(hwnd);
 }
 
 Window::~Window() {
-    const wchar_t CLASS_NAME[] = L"Sample Window Class";
+    const wchar_t CLASS_NAME[] = L"Main Window";
 	UnregisterClass(CLASS_NAME, hInstance);
 }
 
 bool Window::ProcessMessages() {
     MSG msg = { };
 
-    while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE) > 0)
+    while (PeekMessageW(&msg, nullptr, 0, 0, PM_REMOVE) > 0)
     {
         if (msg.message == WM_QUIT || msg.message == WM_DESTROY) {
 			return false;
@@ -254,8 +282,22 @@ bool Window::AddListViewItem(Element element) {
 LRESULT CALLBACK ChildWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     switch (uMsg) {
     case WM_DESTROY:
-        PostQuitMessage(0);
         return 0;
+    case WM_CLOSE:
+        ShowWindow(hwnd, SW_HIDE);
+        return 0;
+    case WM_COMMAND:
+        {
+            if ((HIWORD(wParam) == BN_CLICKED) && (lParam != 0))
+            {
+                switch (LOWORD(wParam))
+                {
+                case CHILD_TEST_BTN_ID:
+					std::cout << "Test button clicked in Child Window" << std::endl;
+                    break;
+                }
+            }
+    }
     }
 
     return DefWindowProc(hwnd, uMsg, wParam, lParam);
@@ -264,7 +306,10 @@ LRESULT CALLBACK ChildWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 ChildWindow::ChildWindow(HWND parentHwnd)
     : hInstance(GetModuleHandle(nullptr))
 {
-    const wchar_t CHILD_CLASS_NAME[] = L"Sample Window Class";
+    const wchar_t CHILD_CLASS_NAME[] = L"Child Window";
+
+    passEditHwnd = NULL;
+    testHwnd = NULL;
 
     WNDCLASS wndClass = { };
 
@@ -276,10 +321,10 @@ ChildWindow::ChildWindow(HWND parentHwnd)
 
     RegisterClass(&wndClass);
 
-    DWORD style = WS_CAPTION | WS_SYSMENU | WS_CHILD;
+    DWORD style = WS_CAPTION | WS_SYSMENU | WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
 
-    int width = MAIN_WINDOW_WIDTH - LV_WIDTH;
-    int height = MAIN_WINDOW_HEIGHT;
+    int windowWidth = MAIN_WINDOW_WIDTH - LV_WIDTH;
+    int windowHeight = MAIN_WINDOW_HEIGHT;
 
     hwnd = CreateWindowExW(
         0,
@@ -288,20 +333,77 @@ ChildWindow::ChildWindow(HWND parentHwnd)
         style,
         LV_WIDTH,
         0,
-        width,
-        height,
+        windowWidth,
+        windowHeight,
         parentHwnd,
         NULL,
         hInstance,
         NULL
     );
-    if (hwnd) {
-        ShowWindow(hwnd, SW_SHOW);
-        UpdateWindow(hwnd);
+
+	childHwnd = hwnd;
+
+    if (!hwnd) {
+		std::cout << "\nChild window creation : Failure" << std::endl;
+        return;
     }
+    std::cout << "\nChild window creation : Success" << std::endl;
+
+    passEditHwnd = CreateWindow(
+        L"EDIT",
+        L"jjjj",
+        WS_BORDER | WS_VISIBLE | WS_CHILD | WS_TABSTOP,
+        (windowWidth / 2) - (buttonWidth / 2),
+        (windowHeight / 4) * 3,
+        buttonWidth,
+        buttonHeight,
+        hwnd,
+        (HMENU)CHILD_EDIT_ID,
+        hInstance,
+        NULL
+    );
+
+    test = passEditHwnd;
+
+    testHwnd = CreateWindow(
+        L"BUTTON",
+        L"test",
+        WS_BORDER | WS_TABSTOP | WS_VISIBLE | WS_CHILD,
+        (windowWidth / 2) - (buttonWidth / 2),
+        windowHeight / 2,
+        buttonWidth,
+        buttonHeight,
+        hwnd,
+        (HMENU)4,
+        hInstance,
+        NULL
+    );
+
+    if (!passEditHwnd) {
+        std::cout << "passEdit creation : Failure" << std::endl;
+        return;
+    }
+    std::cout << "passEdit creation : Success" << std::endl;
+
+    if (!testHwnd) {
+        std::cout << "testHwnd creation : Failure" << std::endl;
+        return;
+    }
+    std::cout << "testHwnd creation : Success" << std::endl;
+}
+
+bool ChildWindow::ProcessMessages() {
+    MSG msg = { };
+
+    while (PeekMessageW(&msg, nullptr, 0, 0, PM_REMOVE) > 0)
+    {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+    return true;
 }
 
 ChildWindow::~ChildWindow() {
-    const wchar_t CLASS_NAME[] = L"Sample Window Class";
+    const wchar_t CLASS_NAME[] = L"Child Window";
     UnregisterClass(CLASS_NAME, hInstance);
 }

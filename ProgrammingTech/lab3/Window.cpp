@@ -18,7 +18,6 @@ const int buttonHeight = 30;
 
 HWND childHwnd;
 HWND mainHwnd;
-HWND test;
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     switch (uMsg) {
@@ -321,7 +320,7 @@ ChildWindow::ChildWindow(HWND parentHwnd)
 
     RegisterClass(&wndClass);
 
-    DWORD style = WS_CAPTION | WS_SYSMENU | WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
+    DWORD style = WS_SYSMENU | WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_BORDER;
 
     int windowWidth = MAIN_WINDOW_WIDTH - LV_WIDTH;
     int windowHeight = MAIN_WINDOW_HEIGHT;
@@ -362,8 +361,6 @@ ChildWindow::ChildWindow(HWND parentHwnd)
         hInstance,
         NULL
     );
-
-    test = passEditHwnd;
 
     testHwnd = CreateWindow(
         L"BUTTON",

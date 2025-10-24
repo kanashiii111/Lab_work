@@ -52,8 +52,18 @@
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" required>
                 </div>
-                <button type="submit" class="submit-btn" onclick="alert('Успешно!')">Забронировать</button>
+                <button type="submit" class="submit-btn">Забронировать</button>
             </form>
+        </div>
+    </section>
+
+    <section class="orders-section">
+        <div class="orders-container">
+            <h2 style="text-align: center;">Ваши забронированные билеты</h2>
+            <div class="orders-list" id="ordersList">
+                <!-- Заказы будут добавляться сюда динамически -->
+                <div class="no-orders" id="noOrders">У вас пока нет забронированных билетов</div>
+            </div>
         </div>
     </section>
 
@@ -69,6 +79,6 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="/js/scripts.js"></script>
 </body>
 </html>

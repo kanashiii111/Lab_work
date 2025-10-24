@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const app = express()
 const port = 3000
 app.use(express.static(path.join(__dirname, '../css')))
+app.use("/js", express.static(path.join(__dirname, '../js')))
 app.use(bodyParser.urlencoded({extended: true}));
 
 orders = []
@@ -23,10 +24,4 @@ app.listen(port, () => {
 app.post('/', (req, res) => {
     data = req.body
     orders.push(data)
-    /*
-    console.log(`Матч: ${match}`)
-    console.log(`Билет: ${ticket}`)
-    console.log(`Кол-во билетов: ${quantity}`)
-    console.log(`Email: ${email}`)
-    */
 })

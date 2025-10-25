@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include <iostream>
 #include "Element.h"
+#include <vector>
 
 const int MAIN_WINDOW_WIDTH = 1140; //LV_WIDTH + LV_PADDING_X * 2;
 const int MAIN_WINDOW_HEIGHT = 460; //(LV_HEIGHT * 2) + LV_PADDING_Y * 2 + 40;
@@ -46,8 +47,11 @@ class ChildWindow{
 	private:
 		HINSTANCE hInstance;
 		HWND hwnd;
-		HWND passEditHwnd;
-		HWND testHwnd;
+
+		std::vector<HWND> CHILD_EDIT_HWNDS;
+		std::vector<HWND> CHILD_BTN_HWNDS;
+		std::vector<HWND> CHILD_STATIC_HWNDS;
+
 	public:
 		ChildWindow(HWND parentHwnd);
 		~ChildWindow();
